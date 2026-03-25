@@ -1,0 +1,14 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.1.2/schema.json",
+  "extends": ["ultracite"],
+  "overrides": [
+    {
+      "includes": ["**/styles/globals.css"],
+      "css": {
+        "linter": {
+          "enabled": false
+        }
+      }
+    }
+  ]
+}
