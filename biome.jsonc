@@ -1,14 +1,36 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.1.2/schema.json",
-  "extends": ["ultracite"],
-  "overrides": [
-    {
-      "includes": ["**/styles/globals.css"],
-      "css": {
-        "linter": {
-          "enabled": false
-        }
-      }
-    }
-  ]
+	"$schema": "https://biomejs.dev/schemas/2.1.2/schema.json",
+	"files": {
+		"includes": [
+			"**",
+			"!node_modules",
+			"!.next",
+			"!.vercel",
+			"!dist",
+			"!build",
+			"!public"
+		]
+	},
+	"javascript": {
+		"formatter": {
+			"quoteStyle": "single"
+		}
+	},
+	"linter": {
+		"rules": {
+			"style": {
+				"useBlockStatements": "error"
+			}
+		}
+	},
+	"overrides": [
+		{
+			"includes": ["**/styles/globals.css"],
+			"css": {
+				"linter": {
+					"enabled": false
+				}
+			}
+		}
+	]
 }
