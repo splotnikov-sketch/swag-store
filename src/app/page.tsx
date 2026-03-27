@@ -3,6 +3,7 @@
 import { Suspense } from 'react'
 import { Hero } from './_components/hero'
 import { PromoBanner } from './_components/promo-banner'
+import { FeaturedGrid } from './_components/featured-grid'
 
 export default function Home() {
 	return (
@@ -11,6 +12,9 @@ export default function Home() {
 				<PromoBanner />
 			</Suspense>
 			<Hero />
+			<Suspense fallback={<div className="mx-auto max-w-7xl px-4 py-16">Loading products...</div>}>
+				<FeaturedGrid />
+			</Suspense>
 		</>
 	)
 }
