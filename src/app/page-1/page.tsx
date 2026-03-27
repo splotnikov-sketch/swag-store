@@ -1,3 +1,5 @@
+// /src/app/page.tsx
+
 import { getProducts } from '@/lib/products'
 import { getCategories } from '@/lib/categories'
 import { getPromotion } from '@/lib/promotions'
