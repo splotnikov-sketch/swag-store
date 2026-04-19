@@ -9,7 +9,8 @@
 			"!dist",
 			"!build",
 			"!public",
-			"!src/components/ui"
+			"!src/components/ui",
+			"!next-env.d.ts"
 		]
 	},
 	"javascript": {
