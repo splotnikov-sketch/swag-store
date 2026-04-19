@@ -15,13 +15,12 @@ import {
 	removeCartItem as removeCartItemAction,
 	updateCartItem as updateCartItemAction
 } from '@/lib/cart'
-import type { Cart } from '@/lib/types'
+import type { Cart, Product } from '@/lib/types'
 import { cartReducer } from './cart-reducer'
 
 type CartContextType = {
 	cart: Cart | null
-	pendingId: string | null
-	addItem: (productId: string, quantity: number) => void
+	addItem: (productId: string, quantity: number, product?: Product) => void
 	updateItem: (productId: string, quantity: number) => void
 	removeItem: (productId: string) => void
 }
@@ -45,18 +44,16 @@ export function CartProvider({
 }) {
 	const [optimisticCart, dispatch] = useOptimistic(serverCart, cartReducer)
 	const [, startTransition] = useTransition()
-	const [pendingId, setPendingId] = useState<string | null>(null)
+	const [, setPendingId] = useState<string | null>(null)
 
 	const addItem = useCallback(
-		(productId: string, quantity: number) => {
+		(productId: string, quantity: number, product?: Product) => {
 			startTransition(async () => {
-				dispatch({ type: 'add', productId, quantity })
+				dispatch({ type: 'add', productId, quantity, product })
 				try {
 					await addToCartAction(productId, quantity)
 				} catch (error) {
 					console.error('Failed to add item:', error)
-				} finally {
-					setPendingId(null)
 				}
 			})
 		},
@@ -100,7 +97,6 @@ export function CartProvider({
 		<CartContext
 			value={{
 				cart: optimisticCart,
-				pendingId,
 				addItem,
 				updateItem,
 				removeItem

@@ -1,9 +1,9 @@
 // src/components/cart/store/cart-reducer.ts
 
-import type { Cart } from '@/lib/types'
+import type { Cart, Product } from '@/lib/types'
 
 export type CartAction =
-	| { type: 'add'; productId: string; quantity: number }
+	| { type: 'add'; productId: string; quantity: number; product?: Product }
 	| { type: 'update'; productId: string; quantity: number }
 	| { type: 'remove'; productId: string }
 
@@ -72,6 +72,23 @@ export function cartReducer(
 					subtotal: items.reduce((sum, i) => sum + i.lineTotal, 0)
 				}
 			}
+			if (action.product) {
+				const newItem = {
+					productId: action.productId,
+					quantity: action.quantity,
+					addedAt: new Date().toISOString(),
+					product: action.product,
+					lineTotal: action.product.price * action.quantity
+				}
+				const items = [...cart.items, newItem]
+				return {
+					...cart,
+					items,
+					totalItems: cart.totalItems + action.quantity,
+					subtotal: items.reduce((sum, i) => sum + i.lineTotal, 0)
+				}
+			}
+
 			return {
 				...cart,
 				totalItems: cart.totalItems + action.quantity

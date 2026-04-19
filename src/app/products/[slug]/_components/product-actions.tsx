@@ -4,15 +4,16 @@
 
 import { useState } from 'react'
 import { useCart } from '@/components/cart/store/cart-provider'
+import type { Product } from '@/lib/types'
 import AddToCartButton from './add-to-cart-button'
 import QuantitySelector from './quantity-selector'
 
 export default function ProductActions({
-	productId,
+	product,
 	stock,
 	inStock
 }: {
-	productId: string
+	product: Product
 	stock: number
 	inStock: boolean
 }) {
@@ -20,7 +21,7 @@ export default function ProductActions({
 	const { addItem } = useCart()
 
 	async function handleAdd() {
-		addItem(productId, quantity)
+		addItem(product.id, quantity, product)
 	}
 
 	return (

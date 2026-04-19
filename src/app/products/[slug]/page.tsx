@@ -52,7 +52,7 @@ export default async function ProductPage({ params }: Props) {
 								</div>
 							}
 						>
-							<ProductPurchase productId={product.id} />
+							<ProductPurchase product={product} />
 						</Suspense>
 					</div>
 				</div>
