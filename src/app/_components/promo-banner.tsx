@@ -11,7 +11,7 @@ export async function PromoBanner() {
 	}
 
 	return (
-		<section className="bg-black px-4 py-3 text-center text-white">
+		<section className="bg-primary px-4 py-3 text-center text-primary-foreground">
 			<p className="text-sm">
 				{promo.title} — {promo.description}{' '}
 				<Badge variant="secondary" className="ml-2">

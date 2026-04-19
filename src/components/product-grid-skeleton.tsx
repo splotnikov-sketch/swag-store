@@ -1,17 +1,13 @@
 // src/components/product-grid-skeleton.tsx
 
+import { ProductCardSkeleton } from './product-card-skeleton'
+
 export function ProductGridSkeleton({ count = 3 }: { count?: number }) {
 	return (
 		<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
 			{Array.from({ length: count }).map((_, i) => (
 				// biome-ignore lint/suspicious/noArrayIndexKey: static skeleton items never reorder
-				<div key={i} className="overflow-hidden rounded-lg border">
-					<div className="aspect-square animate-pulse bg-muted" />
-					<div className="flex flex-col gap-2 p-4">
-						<div className="h-4 w-3/4 animate-pulse rounded bg-muted" />
-						<div className="h-4 w-1/4 animate-pulse rounded bg-muted" />
-					</div>
-				</div>
+				<ProductCardSkeleton key={`skeleton-${i}`} />
 			))}
 		</div>
 	)

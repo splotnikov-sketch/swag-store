@@ -5,7 +5,7 @@ import { ProductGrid } from '@/components/product-grid'
 import { getProducts } from '@/lib/products'
 
 export async function FeaturedGrid() {
-	const { data: products } = await getProducts({ featured: true, limit: 6 })
+	const { data: products } = await getProducts({ featured: true, limit: 8 })
 
 	return (
 		<>
