@@ -4,12 +4,12 @@ import { serverEnv } from '@/env/server'
 
 export async function apiFetch<T>(
 	path: string,
-	options?: RequestInit,
+	options?: RequestInit
 ): Promise<T> {
 	const url = `${serverEnv.API_BASE_URL}${path}`
 
 	const headers: Record<string, string> = {
-		'x-vercel-protection-bypass': serverEnv.VERCEL_PROTECTION_BYPASS,
+		'x-vercel-protection-bypass': serverEnv.VERCEL_PROTECTION_BYPASS
 	}
 
 	if (options?.body) {
@@ -20,8 +20,8 @@ export async function apiFetch<T>(
 		...options,
 		headers: {
 			...headers,
-			...options?.headers,
-		},
+			...options?.headers
+		}
 	})
 
 	if (!res.ok) {

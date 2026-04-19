@@ -8,12 +8,15 @@
 			"!.vercel",
 			"!dist",
 			"!build",
-			"!public"
+			"!public",
+			"!src/components/ui"
 		]
 	},
 	"javascript": {
 		"formatter": {
-			"quoteStyle": "single"
+			"quoteStyle": "single",
+			"semicolons": "asNeeded",
+			"trailingCommas": "none"
 		}
 	},
 	"linter": {

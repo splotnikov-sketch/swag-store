@@ -2,5 +2,5 @@
 
 'use client'
 export function CurrentYear() {
-    return <>{new Date().getFullYear()}</>
+	return <>{new Date().getFullYear()}</>
 }

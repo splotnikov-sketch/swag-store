@@ -1,10 +1,10 @@
 // /src/app/page.tsx
 
 import { Suspense } from 'react'
+import { ProductGridSkeleton } from '@/components/product-grid-skeleton'
+import { FeaturedGrid } from './_components/featured-grid'
 import { Hero } from './_components/hero'
 import { PromoBanner } from './_components/promo-banner'
-import { FeaturedGrid } from './_components/featured-grid'
-import { ProductGridSkeleton } from '@/components/product-grid-skeleton'
 
 export default function Home() {
 	return (
