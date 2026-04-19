@@ -2,10 +2,9 @@
 
 'use client'
 
-import { useState } from 'react'
+import { useState, useOptimistic, useTransition } from 'react'
 import { ShoppingCart } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
-import { Separator } from '@/components/ui/separator'
 import {
   Sheet,
   SheetContent,
@@ -14,39 +13,38 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet'
 import type { Cart } from '@/lib/types'
-import { formatPrice } from '@/lib/utils'
 import { updateCartItem, removeCartItem } from '@/lib/cart'
 import { CartItem } from './cart-item'
+import { CartSummary } from './cart-summary'
+import { cartReducer } from './cart-reducer'
 
 export function CartSheet({ cart }: { cart: Cart | null }) {
   const [open, setOpen] = useState(false)
-  const [pending, setPending] = useState<string | null>(null)
-  const count = cart?.totalItems ?? 0
-  const items = cart?.items ?? []
+  const [optimisticCart, dispatchOptimistic] = useOptimistic(cart, cartReducer)
+  const [isPending, startTransition] = useTransition()
 
-  async function handleUpdate(productId: string, quantity: number) {
-    setPending(productId)
-    try {
+  const count = optimisticCart?.totalItems ?? 0
+  const items = optimisticCart?.items ?? []
+
+  function handleUpdate(productId: string, quantity: number) {
+    startTransition(async () => {
+      dispatchOptimistic({ type: 'update', productId, quantity })
       await updateCartItem(productId, quantity)
-    } finally {
-      setPending(null)
-    }
+    })
   }
 
-  async function handleRemove(productId: string) {
-    setPending(productId)
-    try {
+  function handleRemove(productId: string) {
+    startTransition(async () => {
+      dispatchOptimistic({ type: 'remove', productId })
       await removeCartItem(productId)
-    } finally {
-      setPending(null)
-    }
+    })
   }
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         <button className="flex items-start gap-1" aria-label="Open cart">
-          <ShoppingCart className="size-5 mt-0.5" />
+          <ShoppingCart className="mt-0.5 size-5" />
           {count > 0 && (
             <Badge
               variant="destructive"
@@ -57,7 +55,7 @@ export function CartSheet({ cart }: { cart: Cart | null }) {
           )}
         </button>
       </SheetTrigger>
-      <SheetContent className="flex flex-col px-4">
+      <SheetContent>
         <SheetHeader>
           <SheetTitle>Cart ({count})</SheetTitle>
         </SheetHeader>
@@ -72,16 +70,15 @@ export function CartSheet({ cart }: { cart: Cart | null }) {
               <CartItem
                 key={item.productId}
                 item={item}
-                pending={pending === item.productId}
+                pending={isPending}
                 onUpdate={(qty) => handleUpdate(item.productId, qty)}
                 onRemove={() => handleRemove(item.productId)}
               />
             ))}
-            <Separator />
-            <div className="flex justify-between font-medium">
-              <span>Subtotal</span>
-              <span>{formatPrice(cart!.subtotal, cart!.currency)}</span>
-            </div>
+            <CartSummary
+              subtotal={optimisticCart!.subtotal}
+              currency={optimisticCart!.currency}
+            />
           </div>
         )}
       </SheetContent>
