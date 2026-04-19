@@ -13,7 +13,7 @@ import {
 	SheetTitle,
 	SheetTrigger
 } from '@/components/ui/sheet'
-
+import { Button } from '../ui/button'
 import { CartItem } from './cart-item'
 import { CartSummary } from './cart-summary'
 import { useCart } from './store/cart-provider'
@@ -28,7 +28,11 @@ export function CartWidget() {
 	return (
 		<Sheet open={open} onOpenChange={setOpen}>
 			<SheetTrigger asChild>
-				<button className="flex items-start gap-1 w-10" aria-label="Open cart">
+				<Button
+					variant="ghost"
+					className="flex items-start gap-1 w-10 px-0"
+					aria-label="Open cart"
+				>
 					<ShoppingCart className="mt-0.5 size-5" />
 					{count > 0 && (
 						<Badge
@@ -38,7 +42,7 @@ export function CartWidget() {
 							{count}
 						</Badge>
 					)}
-				</button>
+				</Button>
 			</SheetTrigger>
 			<SheetContent className="flex flex-col px-4">
 				<SheetHeader>
@@ -62,7 +66,10 @@ export function CartWidget() {
 								onRemove={() => removeItem(item.productId)}
 							/>
 						))}
-						<CartSummary subtotal={cart?.subtotal} currency={cart?.currency} />
+						<CartSummary
+							subtotal={cart?.subtotal ?? 0}
+							currency={cart?.currency ?? 'USD'}
+						/>
 					</div>
 				)}
 			</SheetContent>
