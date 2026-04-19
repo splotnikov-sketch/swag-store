@@ -3,7 +3,7 @@
 'use client'
 
 import { debounce } from 'lodash'
-import { Search } from 'lucide-react'
+import { Search, X } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useCallback, useMemo, useState } from 'react'
 import { Button } from '@/components/ui/button'
@@ -45,7 +45,7 @@ export default function SearchForm({
 				if (q.length >= 3 || q.length === 0) {
 					updateUrl(q, cat)
 				}
-			}, 500),
+			}, 300),
 		[updateUrl]
 	)
 
@@ -79,6 +79,21 @@ export default function SearchForm({
 					onChange={handleChange}
 					className="pl-10"
 				/>
+				{query && (
+					<Button
+						type="button"
+						variant="ghost"
+						size="icon"
+						className="absolute right-2 top-1/2 size-6 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+						onClick={() => {
+							setQuery('')
+							debouncedUpdate.cancel()
+							updateUrl('', category)
+						}}
+					>
+						<X className="size-3" />
+					</Button>
+				)}
 			</div>
 			<CategoryFilter
 				value={category}
