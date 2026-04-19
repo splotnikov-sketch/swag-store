@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge'
 import {
   Sheet,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -19,7 +20,7 @@ import { useCart } from './store/cart-provider'
 
 export function CartWidget() {
   const [open, setOpen] = useState(false)
-  const { cart, isPending, updateItem, removeItem } = useCart()
+  const { cart, pendingId, updateItem, removeItem } = useCart()
 
   const count = cart?.totalItems ?? 0
   const items = cart?.items ?? []
@@ -42,6 +43,9 @@ export function CartWidget() {
       <SheetContent className="flex flex-col px-4">
         <SheetHeader>
           <SheetTitle>Cart ({count})</SheetTitle>
+          <SheetDescription className="sr-only">
+            Your shopping cart contents
+          </SheetDescription>
         </SheetHeader>
 
         {items.length === 0 ? (
@@ -54,7 +58,6 @@ export function CartWidget() {
               <CartItem
                 key={item.productId}
                 item={item}
-                pending={isPending}
                 onUpdate={(qty) => updateItem(item.productId, qty)}
                 onRemove={() => removeItem(item.productId)}
               />

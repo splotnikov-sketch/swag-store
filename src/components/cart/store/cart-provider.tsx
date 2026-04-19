@@ -2,7 +2,7 @@
 
 'use client'
 
-import { createContext, useContext, useOptimistic, useTransition, useCallback } from 'react'
+import { createContext, useContext, useOptimistic, useTransition, useCallback, useState } from 'react'
 import type { Cart } from '@/lib/types'
 import {
   addToCart as addToCartAction,
@@ -13,7 +13,7 @@ import { cartReducer } from './cart-reducer'
 
 type CartContextType = {
   cart: Cart | null
-  isPending: boolean
+  pendingId: string | null
   addItem: (productId: string, quantity: number) => void
   updateItem: (productId: string, quantity: number) => void
   removeItem: (productId: string) => void
@@ -35,7 +35,8 @@ export function CartProvider({
   children: React.ReactNode
 }) {
   const [optimisticCart, dispatch] = useOptimistic(serverCart, cartReducer)
-  const [isPending, startTransition] = useTransition()
+  const [, startTransition] = useTransition()
+  const [pendingId, setPendingId] = useState<string | null>(null)
 
   const addItem = useCallback((productId: string, quantity: number) => {
     startTransition(async () => {
@@ -44,17 +45,23 @@ export function CartProvider({
         await addToCartAction(productId, quantity)
       } catch (error) {
         console.error('Failed to add item:', error)
+      } finally {
+        setPendingId(null)
       }
+
     })
   }, [dispatch])
 
   const updateItem = useCallback((productId: string, quantity: number) => {
+    setPendingId(productId)
     startTransition(async () => {
       dispatch({ type: 'update', productId, quantity })
       try {
         await updateCartItemAction(productId, quantity)
       } catch (error) {
         console.error('Failed to update item:', error)
+      } finally {
+        setPendingId(null)
       }
     })
   }, [dispatch])
@@ -73,7 +80,7 @@ export function CartProvider({
   }, [dispatch])
 
   return (
-    <CartContext value={{ cart: optimisticCart, isPending, addItem, updateItem, removeItem }}>
+    <CartContext value={{ cart: optimisticCart, pendingId, addItem, updateItem, removeItem }}>
       {children}
     </CartContext>
   )

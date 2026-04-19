@@ -10,17 +10,15 @@ import { formatPrice } from '@/lib/utils'
 
 export function CartItem({
   item,
-  pending,
   onUpdate,
   onRemove,
 }: {
   item: CartItemType
-  pending: boolean
   onUpdate: (quantity: number) => void
   onRemove: () => void
 }) {
   return (
-    <div className={`flex gap-4 ${pending ? 'opacity-50' : ''}`}>
+    <div className="flex gap-4">
       <div className="relative size-16 shrink-0 overflow-hidden rounded bg-muted">
         {item.product.images[0] && (
           <Image
@@ -43,7 +41,7 @@ export function CartItem({
               variant="outline"
               size="icon"
               className="size-6"
-              disabled={pending || item.quantity <= 1}
+              disabled={item.quantity <= 1}
               onClick={() => onUpdate(item.quantity - 1)}
             >
               <Minus className="size-3" />
@@ -53,7 +51,6 @@ export function CartItem({
               variant="outline"
               size="icon"
               className="size-6"
-              disabled={pending}
               onClick={() => onUpdate(item.quantity + 1)}
             >
               <Plus className="size-3" />
@@ -68,7 +65,6 @@ export function CartItem({
         variant="ghost"
         size="icon"
         className="size-6 shrink-0"
-        disabled={pending}
         onClick={onRemove}
       >
         <Trash2 className="size-3" />
