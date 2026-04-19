@@ -27,7 +27,7 @@ export function CartWidget() {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <button className="flex items-start gap-1" aria-label="Open cart">
+        <button className="flex items-start gap-1 w-10" aria-label="Open cart">
           <ShoppingCart className="mt-0.5 size-5" />
           {count > 0 && (
             <Badge
