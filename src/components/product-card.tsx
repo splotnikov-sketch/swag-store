@@ -24,7 +24,7 @@ export function ProductCard({ product, eager = false }: { product: Product; eage
                     )}
                 </div>
                 <CardContent className="flex flex-col gap-1 p-4">
-                    <h3 className="truncate font-medium">{product.name}</h3>
+                    <h3 className="text-sm font-medium leading-tight">{product.name}</h3>
                     <p className="text-sm text-muted-foreground">
                         {formatPrice(product.price, product.currency)}
                     </p>
