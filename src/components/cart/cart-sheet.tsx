@@ -13,13 +13,10 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet'
 import type { Cart } from '@/lib/types'
-import { formatPrice } from '@/lib/utils'
-import { Separator } from '@/components/ui/separator'
 
 export function CartSheet({ cart }: { cart: Cart | null }) {
   const [open, setOpen] = useState(false)
   const count = cart?.totalItems ?? 0
-  const items = cart?.items ?? []
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -40,34 +37,9 @@ export function CartSheet({ cart }: { cart: Cart | null }) {
         <SheetHeader>
           <SheetTitle>Cart ({count})</SheetTitle>
         </SheetHeader>
-
-        {items.length === 0 ? (
-          <div className="flex flex-1 items-center justify-center py-12">
-            <p className="text-muted-foreground">Your cart is empty</p>
-          </div>
-        ) : (
-          <div className="flex flex-col gap-4 py-4">
-            {items.map((item) => (
-              <div key={item.productId} className="flex gap-4">
-                <div className="size-16 rounded bg-muted" />
-                <div className="flex flex-1 flex-col gap-1">
-                  <p className="text-sm font-medium">{item.product.name}</p>
-                  <p className="text-sm text-muted-foreground">
-                    Qty: {item.quantity}
-                  </p>
-                  <p className="text-sm font-medium">
-                    {formatPrice(item.lineTotal, item.product.currency)}
-                  </p>
-                </div>
-              </div>
-            ))}
-            <Separator />
-            <div className="flex justify-between font-medium">
-              <span>Subtotal</span>
-              <span>{formatPrice(cart!.subtotal, cart!.currency)}</span>
-            </div>
-          </div>
-        )}
+        <p className="py-12 text-center text-muted-foreground">
+          Your cart is empty
+        </p>
       </SheetContent>
     </Sheet>
   )

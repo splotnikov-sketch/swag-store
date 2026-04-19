@@ -19,10 +19,7 @@ export default function ProductActions({
   const [quantity, setQuantity] = useState(1)
 
   async function handleAdd() {
-    // TODO: wire to cart API later, test working flow 1st
-    // was returning 500 on vercel side - 
-    // put await addToCart(productId, quantity) when it's working
-    console.log('Add to cart:', { productId, quantity })
+    await addToCart(productId, quantity)
   }
 
   return (
