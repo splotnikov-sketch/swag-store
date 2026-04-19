@@ -2,7 +2,7 @@
 
 'use client'
 
-import { createContext, useContext, useOptimistic, useTransition } from 'react'
+import { createContext, useContext, useOptimistic, useTransition, useCallback } from 'react'
 import type { Cart } from '@/lib/types'
 import {
   addToCart as addToCartAction,
@@ -37,26 +37,40 @@ export function CartProvider({
   const [optimisticCart, dispatch] = useOptimistic(serverCart, cartReducer)
   const [isPending, startTransition] = useTransition()
 
-  function addItem(productId: string, quantity: number) {
+  const addItem = useCallback((productId: string, quantity: number) => {
     startTransition(async () => {
       dispatch({ type: 'add', productId, quantity })
-      await addToCartAction(productId, quantity)
+      try {
+        await addToCartAction(productId, quantity)
+      } catch (error) {
+        console.error('Failed to add item:', error)
+      }
     })
-  }
+  }, [dispatch])
 
-  function updateItem(productId: string, quantity: number) {
+  const updateItem = useCallback((productId: string, quantity: number) => {
     startTransition(async () => {
       dispatch({ type: 'update', productId, quantity })
-      await updateCartItemAction(productId, quantity)
+      try {
+        await updateCartItemAction(productId, quantity)
+      } catch (error) {
+        console.error('Failed to update item:', error)
+      }
     })
-  }
+  }, [dispatch])
 
-  function removeItem(productId: string) {
+  const removeItem = useCallback((productId: string) => {
     startTransition(async () => {
       dispatch({ type: 'remove', productId })
-      await removeCartItemAction(productId)
+      try {
+        // Simulate failure
+        // throw new Error('Simulated failure')
+        await removeCartItemAction(productId)
+      } catch (error) {
+        console.error('Failed to remove item:', error)
+      }
     })
-  }
+  }, [dispatch])
 
   return (
     <CartContext value={{ cart: optimisticCart, isPending, addItem, updateItem, removeItem }}>

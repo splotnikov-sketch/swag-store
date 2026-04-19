@@ -11,8 +11,6 @@ export default async function ProductPurchase({
 }) {
   const { data: stock } = await getProductStock(productId)
 
-  console.log(JSON.stringify(stock, null, 2))
-
   return (
     <div className="flex flex-col gap-4">
       {!stock.inStock ? (
