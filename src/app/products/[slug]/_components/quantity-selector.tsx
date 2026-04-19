@@ -25,6 +25,7 @@ export default function QuantitySelector({
           className="disabled:opacity-30"
           onClick={() => onChange(Math.max(1, quantity - 1))}
           disabled={quantity <= 1}
+          aria-label="Decrease quantity"
         >
           <Minus className="size-4" />
         </Button>
@@ -35,6 +36,7 @@ export default function QuantitySelector({
           className="disabled:opacity-30"
           onClick={() => onChange(Math.min(stock, quantity + 1))}
           disabled={atMax}
+          aria-label="Increase quantity"
         >
           <Plus className="size-4" />
         </Button>
