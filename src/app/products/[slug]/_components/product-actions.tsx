@@ -3,6 +3,7 @@
 'use client'
 
 import { useState } from 'react'
+import { addToCart } from '@/lib/cart'
 import QuantitySelector from './quantity-selector'
 import AddToCartButton from './add-to-cart-button'
 
@@ -17,6 +18,11 @@ export default function ProductActions({
 }) {
   const [quantity, setQuantity] = useState(1)
 
+  async function handleAdd() {
+    // TODO: wire to cart API later, test working flow 1st
+    console.log('Add to cart:', { productId, quantity })
+  }
+
   return (
     <div className="flex flex-col gap-4">
       {inStock && (
@@ -26,11 +32,8 @@ export default function ProductActions({
           onChange={setQuantity}
         />
       )}
-      <AddToCartButton
-        productId={productId}
-        quantity={quantity}
-        inStock={inStock}
-      />
+      <AddToCartButton productId={productId}
+        quantity={quantity} inStock={inStock} onAdd={handleAdd} />
     </div>
   )
 }

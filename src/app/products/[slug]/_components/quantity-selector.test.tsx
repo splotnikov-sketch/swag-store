@@ -6,10 +6,6 @@ import { render, screen, cleanup } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import QuantitySelector from './quantity-selector'
 
-afterEach(() => {
-  cleanup()
-})
-
 describe('QuantitySelector', () => {
   it('disables decrease at quantity 1', () => {
     render(
