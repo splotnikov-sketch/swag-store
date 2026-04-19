@@ -29,7 +29,7 @@ export default function ProductActions({
       {inStock && (
         <QuantitySelector stock={stock} quantity={quantity} onChange={setQuantity} />
       )}
-      <AddToCartButton inStock={inStock} onAdd={handleAdd} productId={''} quantity={0} />
+      <AddToCartButton inStock={inStock} onAdd={handleAdd} />
     </div>
   )
 }
