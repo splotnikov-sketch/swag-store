@@ -3,6 +3,7 @@
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
 import { ProductGridSkeleton } from '@/components/product-grid-skeleton'
+import SearchForm from './_components/search-form'
 import { SearchResults } from './_components/search-results'
 
 export const metadata: Metadata = {
@@ -21,7 +22,7 @@ export default async function SearchPage({ searchParams }: Props) {
 		<div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
 			<h1 className="mb-8 text-3xl font-bold">Search</h1>
 
-			{/* TODO: SearchForm */}
+			<SearchForm initialQuery={q ?? ''} />
 
 			<div className="mt-8">
 				<Suspense key={`${q}-${category}`} fallback={<ProductGridSkeleton />}>
