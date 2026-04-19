@@ -7,13 +7,9 @@ import { Button } from '@/components/ui/button'
 import { Loader2 } from 'lucide-react'
 
 export default function AddToCartButton({
-  productId,
-  quantity,
   inStock,
   onAdd,
 }: {
-  productId: string
-  quantity: number
   inStock: boolean
   onAdd: () => Promise<void>
 }) {

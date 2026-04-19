@@ -6,7 +6,7 @@ import type { Product } from '@/lib/types'
 import { formatPrice } from '@/lib/utils'
 import { Card, CardContent } from '@/components/ui/card'
 
-export function ProductCard({ product }: { product: Product }) {
+export function ProductCard({ product, eager = false }: { product: Product; eager?: boolean }) {
     return (
         <Link href={`/products/${product.slug}`}>
             <Card className="group overflow-hidden transition-shadow hover:shadow-lg">
@@ -18,6 +18,8 @@ export function ProductCard({ product }: { product: Product }) {
                             fill
                             className="object-cover transition-transform group-hover:scale-105"
                             sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+                            loading={eager ? 'eager' : 'lazy'}
+                            fetchPriority={eager ? 'high' : 'auto'}
                         />
                     )}
                 </div>
