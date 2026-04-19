@@ -35,9 +35,17 @@ const mockCart: Cart = {
 }
 
 describe('cartReducer', () => {
-  it('returns null for any action when cart is null', () => {
-    expect(cartReducer(null, { type: 'remove', productId: 'x' })).toBeNull()
-  })
+ it('returns null for remove/update when cart is null', () => {
+  expect(cartReducer(null, { type: 'remove', productId: 'x' })).toBeNull()
+  expect(cartReducer(null, { type: 'update', productId: 'x', quantity: 1 })).toBeNull()
+})
+
+it('creates a temporary cart on add when cart is null', () => {
+  const result = cartReducer(null, { type: 'add', productId: 'test', quantity: 2 })
+  expect(result).not.toBeNull()
+  expect(result!.totalItems).toBe(2)
+  expect(result!.items).toHaveLength(0)
+})
 
   it('removes an item', () => {
     const result = cartReducer(mockCart, { type: 'remove', productId: 'bottle_001' })

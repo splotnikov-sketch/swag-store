@@ -8,7 +8,20 @@ export type CartAction =
   | { type: 'remove'; productId: string }
 
 export function cartReducer(cart: Cart | null, action: CartAction): Cart | null {
-  if (!cart) return null
+   if (!cart) {
+    if (action.type === 'add') {
+      return {
+        token: '',
+        items: [],
+        totalItems: action.quantity,
+        subtotal: 0,
+        currency: 'USD',
+        createdAt: '',
+        updatedAt: '',
+      }
+    }
+    return null
+  }
 
   switch (action.type) {
     case 'remove': {
