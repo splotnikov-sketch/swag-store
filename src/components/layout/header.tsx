@@ -2,9 +2,7 @@
 
 import Link from 'next/link'
 import { clientEnv } from '@/env/client'
-import { Suspense } from 'react'
-import { CartIndicator } from './cart-indicator'
-import { ShoppingCartIcon } from 'lucide-react'
+import { CartWidget } from '@/components/cart/cart-widget '
 
 export function Header() {
   return (
@@ -20,9 +18,7 @@ export function Header() {
           <Link href="/search" className="text-sm hover:underline">
             Search
           </Link>
-          <Suspense fallback={<ShoppingCartIcon />}>
-            <CartIndicator />
-          </Suspense>
+          <CartWidget />
         </nav>
       </div>
     </header>

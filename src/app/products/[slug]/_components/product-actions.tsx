@@ -3,9 +3,10 @@
 'use client'
 
 import { useState } from 'react'
-import { addToCart } from '@/lib/cart'
 import QuantitySelector from './quantity-selector'
 import AddToCartButton from './add-to-cart-button'
+import { useCart } from '@/components/cart/store/cart-provider'
+
 
 export default function ProductActions({
   productId,
@@ -17,22 +18,18 @@ export default function ProductActions({
   inStock: boolean
 }) {
   const [quantity, setQuantity] = useState(1)
+  const { addItem } = useCart()
 
   async function handleAdd() {
-    await addToCart(productId, quantity)
+    addItem(productId, quantity)
   }
 
   return (
     <div className="flex flex-col gap-4">
       {inStock && (
-        <QuantitySelector
-          stock={stock}
-          quantity={quantity}
-          onChange={setQuantity}
-        />
+        <QuantitySelector stock={stock} quantity={quantity} onChange={setQuantity} />
       )}
-      <AddToCartButton productId={productId}
-        quantity={quantity} inStock={inStock} onAdd={handleAdd} />
+      <AddToCartButton inStock={inStock} onAdd={handleAdd} productId={''} quantity={0} />
     </div>
   )
 }

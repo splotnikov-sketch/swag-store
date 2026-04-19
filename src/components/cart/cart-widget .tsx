@@ -2,7 +2,7 @@
 
 'use client'
 
-import { useState, useOptimistic, useTransition } from 'react'
+import { useState } from 'react'
 import { ShoppingCart } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import {
@@ -12,33 +12,17 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet'
-import type { Cart } from '@/lib/types'
-import { updateCartItem, removeCartItem } from '@/lib/cart'
+
 import { CartItem } from './cart-item'
 import { CartSummary } from './cart-summary'
-import { cartReducer } from './cart-reducer'
+import { useCart } from './store/cart-provider'
 
-export function CartSheet({ cart }: { cart: Cart | null }) {
+export function CartWidget() {
   const [open, setOpen] = useState(false)
-  const [optimisticCart, dispatchOptimistic] = useOptimistic(cart, cartReducer)
-  const [isPending, startTransition] = useTransition()
+  const { cart, isPending, updateItem, removeItem } = useCart()
 
-  const count = optimisticCart?.totalItems ?? 0
-  const items = optimisticCart?.items ?? []
-
-  function handleUpdate(productId: string, quantity: number) {
-    startTransition(async () => {
-      dispatchOptimistic({ type: 'update', productId, quantity })
-      await updateCartItem(productId, quantity)
-    })
-  }
-
-  function handleRemove(productId: string) {
-    startTransition(async () => {
-      dispatchOptimistic({ type: 'remove', productId })
-      await removeCartItem(productId)
-    })
-  }
+  const count = cart?.totalItems ?? 0
+  const items = cart?.items ?? []
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -55,7 +39,7 @@ export function CartSheet({ cart }: { cart: Cart | null }) {
           )}
         </button>
       </SheetTrigger>
-      <SheetContent>
+      <SheetContent className="flex flex-col px-4">
         <SheetHeader>
           <SheetTitle>Cart ({count})</SheetTitle>
         </SheetHeader>
@@ -71,14 +55,11 @@ export function CartSheet({ cart }: { cart: Cart | null }) {
                 key={item.productId}
                 item={item}
                 pending={isPending}
-                onUpdate={(qty) => handleUpdate(item.productId, qty)}
-                onRemove={() => handleRemove(item.productId)}
+                onUpdate={(qty) => updateItem(item.productId, qty)}
+                onRemove={() => removeItem(item.productId)}
               />
             ))}
-            <CartSummary
-              subtotal={optimisticCart!.subtotal}
-              currency={optimisticCart!.currency}
-            />
+            <CartSummary subtotal={cart!.subtotal} currency={cart!.currency} />
           </div>
         )}
       </SheetContent>
