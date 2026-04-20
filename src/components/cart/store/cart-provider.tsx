@@ -7,7 +7,6 @@ import {
 	useCallback,
 	useContext,
 	useOptimistic,
-	useState,
 	useTransition
 } from 'react'
 import {
@@ -44,7 +43,6 @@ export function CartProvider({
 }) {
 	const [optimisticCart, dispatch] = useOptimistic(serverCart, cartReducer)
 	const [, startTransition] = useTransition()
-	const [, setPendingId] = useState<string | null>(null)
 
 	const addItem = useCallback(
 		(productId: string, quantity: number, product?: Product) => {
@@ -62,15 +60,12 @@ export function CartProvider({
 
 	const updateItem = useCallback(
 		(productId: string, quantity: number) => {
-			setPendingId(productId)
 			startTransition(async () => {
 				dispatch({ type: 'update', productId, quantity })
 				try {
 					await updateCartItemAction(productId, quantity)
 				} catch (error) {
 					console.error('Failed to update item:', error)
-				} finally {
-					setPendingId(null)
 				}
 			})
 		},
@@ -82,8 +77,6 @@ export function CartProvider({
 			startTransition(async () => {
 				dispatch({ type: 'remove', productId })
 				try {
-					// Simulate failure
-					// throw new Error('Simulated failure')
 					await removeCartItemAction(productId)
 				} catch (error) {
 					console.error('Failed to remove item:', error)
