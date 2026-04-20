@@ -9,7 +9,11 @@ import { SearchResults } from './_components/search-results'
 
 export const metadata: Metadata = {
 	title: 'Search',
-	description: 'Search our collection of products.'
+	description: 'Search our collection of products.',
+	openGraph: {
+		title: 'Search',
+		description: 'Search our collection of products.'
+	}
 }
 
 type Props = {

@@ -1,10 +1,22 @@
 // /src/app/page.tsx
 
+import type { Metadata } from 'next'
 import { Suspense } from 'react'
 import { ProductGridSkeleton } from '@/components/product-grid-skeleton'
 import { FeaturedGrid } from './_components/featured-grid'
 import { Hero } from './_components/hero'
 import { PromoBanner } from './_components/promo-banner'
+
+export const metadata: Metadata = {
+	title: 'Home',
+	description:
+		'Shop curated swag — apparel, accessories, and gear for the community.',
+	openGraph: {
+		title: 'Home',
+		description:
+			'Shop curated swag — apparel, accessories, and gear for the community.'
+	}
+}
 
 export default function Home() {
 	return (
