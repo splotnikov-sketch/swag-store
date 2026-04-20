@@ -2,7 +2,6 @@
 
 'use server'
 
-import { updateTag } from 'next/cache'
 import { cookies } from 'next/headers'
 import { apiFetch } from './api'
 import type { ApiResponse, Cart } from './types'
@@ -66,7 +65,6 @@ export async function addToCart(
 		body: JSON.stringify({ productId, quantity })
 	})
 
-	updateTag('cart')
 	return data
 }
 
@@ -85,7 +83,6 @@ export async function updateCartItem(
 		body: JSON.stringify({ quantity })
 	})
 
-	updateTag('cart')
 	return data
 }
 
@@ -100,6 +97,5 @@ export async function removeCartItem(itemId: string): Promise<Cart> {
 		headers: { 'x-cart-token': token }
 	})
 
-	updateTag('cart')
 	return data
 }
