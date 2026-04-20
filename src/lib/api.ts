@@ -1,5 +1,7 @@
 // src/lib/api.ts
 
+import 'server-only'
+
 import { serverEnv } from '@/env/server'
 
 export async function apiFetch<T>(
