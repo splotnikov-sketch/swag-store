@@ -1,7 +1,7 @@
 // /src/components/layout/header.tsx
 
 import Link from 'next/link'
-import { CartWidget } from '@/components/cart/cart-widget '
+import { CartWidget } from '@/components/cart/cart-widget'
 import { clientEnv } from '@/env/client'
 import { MobileNav } from './mobile-nav'
 
