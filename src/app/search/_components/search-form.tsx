@@ -1,8 +1,7 @@
 // src/app/search/_components/search-form.tsx
 
 'use client'
-
-import { debounce } from 'lodash'
+import debounce from 'lodash/debounce'
 import { Search, X } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useCallback, useMemo, useState } from 'react'
@@ -10,7 +9,6 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import type { Category } from '@/lib/types'
 import CategoryFilter from './category-filter'
-
 export default function SearchForm({
 	initialQuery,
 	initialCategory,
@@ -23,7 +21,6 @@ export default function SearchForm({
 	const router = useRouter()
 	const [query, setQuery] = useState(initialQuery)
 	const [category, setCategory] = useState(initialCategory)
-
 	const updateUrl = useCallback(
 		(q: string, cat: string) => {
 			const params = new URLSearchParams()
@@ -38,7 +35,6 @@ export default function SearchForm({
 		},
 		[router]
 	)
-
 	const debouncedUpdate = useMemo(
 		() =>
 			debounce((q: string, cat: string) => {
@@ -48,26 +44,22 @@ export default function SearchForm({
 			}, 300),
 		[updateUrl]
 	)
-
 	function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
 		const value = e.target.value
 		setQuery(value)
 		debouncedUpdate(value, category)
 	}
-
 	function handleCategoryChange(value: string) {
 		const cat = value === 'all' ? '' : value
 		setCategory(cat)
 		debouncedUpdate.cancel()
 		updateUrl(query, cat)
 	}
-
 	function handleSubmit(e: React.SyntheticEvent) {
 		e.preventDefault()
 		debouncedUpdate.cancel()
 		updateUrl(query, category)
 	}
-
 	return (
 		<form onSubmit={handleSubmit} className="flex flex-col gap-4 sm:flex-row">
 			<div className="relative flex-1">
